@@ -1,12 +1,3 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveFunctor #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GADTs #-}
-
 module WebApp
   where
 
@@ -31,8 +22,16 @@ import qualified Control.Logging as L
 import qualified Data.Text    as T
 import qualified Data.Text.IO as T
 
+import Universum
+
 type API = "echo" :> Capture "message" Text :> Get '[JSON] Message
-      :<|> "sayHello"  :> Capture "name" Text :> Get '[JSON] Text
+      :<|> "sayHello"  :> QueryParam "name" Text :> Get '[JSON] Text
+      :<|> AreaAPI
+
+type AreaAPI = "area" :>
+  (    ReqBody '[JSON] Shape :> Post '[JSON] Double
+  :<|> "shapes" :> Get '[JSON] [Shape]
+  )
 
 newtype Message = Message { msg :: Text }
   deriving Generic
@@ -59,6 +58,22 @@ interpretLoggerF (LogMessage msg next) = do
 runLoggerL :: LoggerL () -> IO ()
 runLoggerL = foldFree interpretLoggerF
 
+data Shape = Circle Double | Square Double
+    deriving Generic
+
+instance ToJSON Shape
+instance FromJSON Shape
+
+shapeServer :: Server AreaAPI
+shapeServer = area :<|> shapes
+
+area :: Shape -> Handler Double
+area (Circle r) = pure $ pi * r * r
+area (Square s) = pure $ s * s
+
+shapes :: Handler [Shape]
+shapes = pure [Circle 5, Square 25]
+
 data EchoF next
   = SayHello Text next
   | Echo Text next
@@ -67,11 +82,12 @@ data EchoF next
 type EchoL = Free EchoF
 
 class Echo m where
-    sayHello :: Text -> m Text
+    sayHello :: Maybe Text -> m Text
     echo :: Text -> m Text
 
 instance Echo EchoL where
-    sayHello name = liftF $ SayHello name name
+    sayHello (Just name) = liftF $ SayHello name name
+    sayHello Nothing = liftF $ SayHello "stranger" "stranger"
     echo msg = liftF $ Echo msg msg
 
 runEchoL :: EchoL Text -> Handler Text
@@ -88,13 +104,13 @@ runEchoL eff = case eff of
 echo' :: Text -> Handler Message
 echo' msg = Message <$> runEchoL (echo msg)
 
-sayHello' :: Text -> Handler Text
+sayHello' :: Maybe Text -> Handler Text
 sayHello' name = runEchoL $ sayHello name
 
 api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = echo' :<|> sayHello'
+server = echo' :<|> sayHello' :<|> shapeServer
 
 runApp = run 8080 (serve api server)

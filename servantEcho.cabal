@@ -48,7 +48,7 @@ extra-source-files:  CHANGELOG.md
 
 
 library se-lib
-  hs-source-dirs:      src, src/WebApp
+  hs-source-dirs:      src/WebApp
   -- Modules exported by the library.
   exposed-modules:  WebApp
 
@@ -59,22 +59,70 @@ library se-lib
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base
+  build-depends:       base ^>=4.12.0.0
+                     , aeson
+                     , async
+                     , bytestring
+                     , clock
+                     , containers
+                     , directory
+                     , extra
+                     , filepath
+                     , free
+                     , lens-aeson
+                     , logging
+                     , microlens
+                     , mtl
+                     , network
+                     , newtype-generics
+                     , process
+                     , random
+                     , safe-exceptions
                      , servant
                      , servant-client
                      , servant-server
+                     , stm
                      , text
-                     , aeson
+                     , time
+                     , transformers
                      , transformers-either
+                     , universum
+                     , unordered-containers
+                     , uuid
+                     , vector
                      , warp
-                     , free
-                     , logging
+                     , yaml
 
   -- Directories containing source files.
   hs-source-dirs:      src
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+
+  default-extensions: NoImplicitPrelude
+                      GADTs
+                      RankNTypes
+                      DeriveFunctor
+                      DeriveGeneric
+                      OverloadedStrings
+                      LambdaCase
+                      MultiParamTypeClasses
+                      ExplicitNamespaces
+                      TypeApplications
+                      ScopedTypeVariables
+                      TypeOperators
+                      TypeFamilies
+                      DataKinds
+                      FlexibleContexts
+                      FlexibleInstances
+                      PatternSynonyms
+                      PolyKinds
+                      DefaultSignatures
+                      ConstraintKinds
+                      NamedFieldPuns
+                      TupleSections
+                      ViewPatterns
+                      MultiWayIf
 
 
 executable servantEcho
@@ -88,7 +136,7 @@ executable servantEcho
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base
+  build-depends:       base ^>=4.12.0.0
                      , se-lib
 
   -- Directories containing source files.
