@@ -50,7 +50,7 @@ extra-source-files:  CHANGELOG.md
 library se-lib
   hs-source-dirs:      src, src/WebApp
   -- Modules exported by the library.
-  exposed-modules: WebApp
+  exposed-modules:  WebApp
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -59,7 +59,7 @@ library se-lib
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.9.1.0
+  build-depends:       base
                      , servant
                      , servant-client
                      , servant-server
@@ -67,6 +67,8 @@ library se-lib
                      , aeson
                      , transformers-either
                      , warp
+                     , free
+                     , logging
 
   -- Directories containing source files.
   hs-source-dirs:      src
@@ -86,7 +88,7 @@ executable servantEcho
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.9.1.0
+  build-depends:       base
                      , se-lib
 
   -- Directories containing source files.
@@ -94,4 +96,3 @@ executable servantEcho
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
-
