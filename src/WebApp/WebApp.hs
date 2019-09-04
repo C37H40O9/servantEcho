@@ -1,8 +1,3 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE OverloadedStrings #-}
-
 module WebApp
   where
 
@@ -21,12 +16,10 @@ import Servant.API
 import Servant.Client
 import Servant.Server
 import Network.Wai.Handler.Warp
-
-import qualified Data.Text    as T
-import qualified Data.Text.IO as T
+import Universum
 
 type API = "echo" :> Capture "message" Text :> Get '[JSON] Message
-      :<|> "sayHello"  :> Capture "name" Text :> Get '[JSON] Text
+      :<|> "sayHello"  :> QueryParam "name" Text :> Get '[JSON] Text
 
 newtype Message = Message { msg :: Text }
   deriving Generic
@@ -37,14 +30,13 @@ api :: Proxy API
 api = Proxy
 
 
--- if we use Text instead of Message then both handlers
--- will look the same and may be confused
-
 echoMessage :: Text -> Handler Message
 echoMessage msg = pure $ Message msg
 
-sayHello :: Text -> Handler Text
-sayHello name = pure $ "Hello " <> name <> "!"
+sayHello :: Maybe Text -> Handler Text
+sayHello name = pure $ case name of
+  Just n -> "Hello " <> n <> "!"
+  Nothing -> "Hello, stranger!"
 
 
 server :: Server API
