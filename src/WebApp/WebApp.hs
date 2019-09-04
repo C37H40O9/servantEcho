@@ -25,7 +25,7 @@ import Network.Wai.Handler.Warp
 import qualified Data.Text    as T
 import qualified Data.Text.IO as T
 
-type API = "echo" :> Capture "massage" Text :> Get '[JSON] Message
+type API = "echo" :> Capture "message" Text :> Get '[JSON] Message
       :<|> "sayHello"  :> Capture "name" Text :> Get '[JSON] Text
 
 newtype Message = Message { msg :: Text }
