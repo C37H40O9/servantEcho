@@ -59,7 +59,7 @@ library se-lib
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.9.1.0
+  build-depends:       base ^>=4.12.0.0
                      , servant
                      , servant-client
                      , servant-server
@@ -86,7 +86,7 @@ executable servantEcho
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base ^>=4.9.1.0
+  build-depends:       base ^>=4.12.0.0
                      , se-lib
 
   -- Directories containing source files.
