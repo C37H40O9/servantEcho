@@ -1,4 +1,8 @@
 module Main where
 
+import WebApp (runApp)
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do
+  putStrLn "Hello, Haskell!"
+  runApp

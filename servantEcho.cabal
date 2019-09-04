@@ -47,9 +47,10 @@ maintainer:          v@gorev.one
 extra-source-files:  CHANGELOG.md
 
 
-library
+library se-lib
+  hs-source-dirs:      src, src/WebApp
   -- Modules exported by the library.
-  -- exposed-modules:
+  exposed-modules: WebApp
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -59,6 +60,13 @@ library
 
   -- Other library packages from which modules are imported.
   build-depends:       base ^>=4.9.1.0
+                     , servant
+                     , servant-client
+                     , servant-server
+                     , text
+                     , aeson
+                     , transformers-either
+                     , warp
 
   -- Directories containing source files.
   hs-source-dirs:      src
@@ -79,6 +87,7 @@ executable servantEcho
 
   -- Other library packages from which modules are imported.
   build-depends:       base ^>=4.9.1.0
+                     , se-lib
 
   -- Directories containing source files.
   hs-source-dirs:      src
