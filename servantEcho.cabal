@@ -60,14 +60,37 @@ library se-lib
 
   -- Other library packages from which modules are imported.
   build-depends:       base ^>=4.12.0.0
+                     , aeson
+                     , async
+                     , bytestring
+                     , clock
+                     , containers
+                     , directory
+                     , extra
+                     , filepath
+                     , free
+                     , lens-aeson
+                     , microlens
+                     , mtl
+                     , network
+                     , newtype-generics
+                     , process
+                     , random
+                     , safe-exceptions
                      , servant
                      , servant-client
                      , servant-server
+                     , stm
                      , text
-                     , aeson
+                     , time
+                     , transformers
                      , transformers-either
-                     , warp
                      , universum
+                     , unordered-containers
+                     , uuid
+                     , vector
+                     , warp
+                     , yaml
 
   -- Directories containing source files.
   hs-source-dirs:      src
