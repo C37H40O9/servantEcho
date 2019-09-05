@@ -49,7 +49,7 @@ spec =
     let clientEnv port = mkClientEnv manager (baseUrl { baseUrlPort = port })
 
     -- testing scenarios start here
-    describe "POST /area" $ do
+    describe "API tests" $ do
       it "should calculate square area" $ \port -> do
         result <- runClientM (serveArea (Square 5)) (clientEnv port)
         result `shouldBe` (Right $ 25.0)
