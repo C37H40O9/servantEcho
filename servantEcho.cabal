@@ -86,10 +86,10 @@ library se-lib
                      , time
                      , transformers
                      , transformers-either
-                     , universum
                      , unordered-containers
                      , uuid
                      , vector
+                     , wai
                      , warp
                      , yaml
 
@@ -99,8 +99,7 @@ library se-lib
   -- Base language which the package is written in.
   default-language:    Haskell2010
 
-  default-extensions: NoImplicitPrelude
-                      GADTs
+  default-extensions: GADTs
                       RankNTypes
                       DeriveFunctor
                       DeriveGeneric
@@ -144,3 +143,65 @@ executable servantEcho
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
+
+
+test-suite test
+  default-language:    Haskell2010
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test, src/WebApp
+  other-modules:       WebApp
+  main-is:             Spec.hs
+  build-depends:       base
+                     , hspec
+                     , se-lib
+                     , transformers-either
+                     , aeson
+                     , text
+                     , servant-server
+                     , servant
+                     , servant-client
+                     , warp
+                     , free
+                     , logging
+                     , wai
+                     , base-compat
+                     , lens
+                     , lens-aeson
+                     , unordered-containers
+                     , http-client
+                     , http-types
+                     , hspec-wai
+
+  default-extensions: GADTs
+                      RankNTypes
+                      DeriveFunctor
+                      DeriveGeneric
+                      OverloadedStrings
+                      LambdaCase
+                      MultiParamTypeClasses
+                      ExplicitNamespaces
+                      TypeApplications
+                      ScopedTypeVariables
+                      TypeOperators
+                      TypeFamilies
+                      DataKinds
+                      FlexibleContexts
+                      FlexibleInstances
+                      PatternSynonyms
+                      PolyKinds
+                      DefaultSignatures
+                      ConstraintKinds
+                      NamedFieldPuns
+                      TupleSections
+                      ViewPatterns
+                      MultiWayIf
+  build-tool-depends: hspec-discover:hspec-discover == 2.*
+
+benchmark simpleBench
+  type:               exitcode-stdio-1.0
+  hs-source-dirs:     benchmark
+  main-is:            simpleBench.hs
+  default-language:   Haskell2010
+  build-depends:      se-lib
+                    , base
+                    , gauge

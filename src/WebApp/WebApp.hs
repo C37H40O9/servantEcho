@@ -22,7 +22,7 @@ import qualified Control.Logging as L
 import qualified Data.Text    as T
 import qualified Data.Text.IO as T
 
-import Universum
+-- import Universum
 
 type API = "echo" :> Capture "message" Text :> Get '[JSON] Message
       :<|> "sayHello"  :> QueryParam "name" Text :> Get '[JSON] Text
@@ -34,9 +34,10 @@ type AreaAPI = "area" :>
   )
 
 newtype Message = Message { msg :: Text }
-  deriving Generic
+  deriving (Generic, Show, Eq)
 
 instance ToJSON Message
+instance FromJSON Message
 
 data LoggerF next where
   LogMessage :: Text -> (() -> next) -> LoggerF next
@@ -59,17 +60,20 @@ runLoggerL :: LoggerL () -> IO ()
 runLoggerL = foldFree interpretLoggerF
 
 data Shape = Circle Double | Square Double
-    deriving Generic
+    deriving (Generic, Show, Eq)
 
 instance ToJSON Shape
 instance FromJSON Shape
 
 shapeServer :: Server AreaAPI
-shapeServer = area :<|> shapes
+shapeServer = serveArea :<|> shapes
 
-area :: Shape -> Handler Double
-area (Circle r) = pure $ pi * r * r
-area (Square s) = pure $ s * s
+area :: Shape -> Double
+area (Circle r) = pi * r * r
+area (Square s) = s * s
+
+serveArea :: Shape -> Handler Double
+serveArea = pure.area
 
 shapes :: Handler [Shape]
 shapes = pure [Circle 5, Square 25]
