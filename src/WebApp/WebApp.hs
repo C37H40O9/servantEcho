@@ -60,7 +60,7 @@ runLoggerL :: LoggerL () -> IO ()
 runLoggerL = foldFree interpretLoggerF
 
 data Shape = Circle Double | Square Double
-    deriving (Generic, Show, Eq)
+  deriving (Generic, Show, Eq)
 
 instance ToJSON Shape
 instance FromJSON Shape

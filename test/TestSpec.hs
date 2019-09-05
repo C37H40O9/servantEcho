@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings, TypeFamilies, DataKinds,
-  DeriveGeneric, TypeOperators #-}
 module TestSpec (spec) where
 
 import           Prelude ()
