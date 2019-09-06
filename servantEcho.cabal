@@ -212,3 +212,4 @@ benchmark simpleBench
   build-depends:      se-lib
                     , base
                     , gauge
+                    , process
