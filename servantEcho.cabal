@@ -73,6 +73,7 @@ library se-lib
                      , logging
                      , microlens
                      , mtl
+                     , natural-transformation
                      , network
                      , newtype-generics
                      , process
@@ -122,7 +123,10 @@ library se-lib
                       TupleSections
                       ViewPatterns
                       MultiWayIf
-
+                      TypeFamilyDependencies
+                      ConstraintKinds
+                      InstanceSigs
+                      AllowAmbiguousTypes
 
 executable servantEcho
   -- .hs or .lhs file containing the Main module.
