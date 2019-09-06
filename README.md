@@ -9,6 +9,12 @@ Include:
 
 Example of servant-docs(http://localhost:8080/servant-docs.md):
 
+## Usage
+In order to choose between different backend types the **BACKEND** variable should be set:
+FM -> free monad (default)
+CEFM -> church-encoded free monad
+FR -> freer monad
+
 ## GET /echo/:message
 
 ### Captures:

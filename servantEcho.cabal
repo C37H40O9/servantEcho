@@ -69,11 +69,13 @@ library se-lib
                      , extra
                      , filepath
                      , free
+                     , freer
                      , lens
                      , lens-aeson
                      , logging
                      , microlens
                      , mtl
+                     , natural-transformation
                      , network
                      , newtype-generics
                      , process
