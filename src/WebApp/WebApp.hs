@@ -17,6 +17,8 @@ import GHC.Generics
 import Servant
 import Servant.API
 import Servant.Client
+
+import Servant.Docs (ToSample, ToCapture, DocIntro(..), DocCapture(..), markdown, singleSample, docs)
 import Servant.Server
 import Servant.Swagger
 import Network.Wai.Handler.Warp
@@ -25,12 +27,12 @@ import Control.Monad.Free
 import qualified Control.Logging as L
 import qualified Data.Text    as T
 import qualified Data.Text.IO as T
+import qualified Servant.Docs as SD
 
-type APIwithSwagger = SwaggerAPI :<|> API
 
 type API = "echo" :> Capture "message" Text :> Get '[JSON] Text
 
-
+type APIWithDocs = ServantDocsAPI :<|> SwaggerAPI :<|> API
 
 data EchoF next
   = SayHello Text next
@@ -62,18 +64,16 @@ runEchoL eff = case eff of
 echo' :: Text -> Handler Text
 echo' msg = runEchoL (echo msg)
 
-
-
 api :: Proxy API
 api = Proxy
 
-apiWithSwagger :: Proxy APIwithSwagger
-apiWithSwagger = Proxy
+apiWithDocs :: Proxy APIWithDocs
+apiWithDocs = Proxy
 
-server :: Server APIwithSwagger
-server = (pure apiSwagger) :<|> echo'
+server :: Server APIWithDocs
+server = (pure servantDocsAPI) :<|> (pure swaggerAPI) :<|> echo'
 
-runApp = run 8080 (serve apiWithSwagger server)
+runApp = run 8080 (serve apiWithDocs server)
 
 
 -- Swagger part
@@ -81,9 +81,26 @@ runApp = run 8080 (serve apiWithSwagger server)
 -- | API for serving @swagger.json@.
 type SwaggerAPI = "swagger.json" :> Get '[JSON] Swagger
 
--- | Swagger spec for Todo API.
-apiSwagger :: Swagger
-apiSwagger = toSwagger api
+-- | Swagger spec for API.
+swaggerAPI :: Swagger
+swaggerAPI = toSwagger api
   & info.title   .~ "Example API"
   & info.version .~ "1.0"
   & info.description ?~ "This is an API that tests swagger integration"
+
+-- Servant-docs part
+
+type ServantDocsAPI = "servant-docs.md" :> Get '[PlainText] String
+
+servantDocsAPI :: String
+servantDocsAPI = echoDocs
+
+instance ToCapture (Capture "message" Text) where
+  toCapture _ = DocCapture "message" "message to echo"
+
+instance ToSample Text where
+  toSamples _ = singleSample "Text sample"
+
+
+
+echoDocs = markdown (docs api :: SD.API)

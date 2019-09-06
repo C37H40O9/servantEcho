@@ -31,7 +31,7 @@ license:             BSD-3-Clause
 license-file:        LICENSE
 
 -- The package author(s).
-author:              Vasily Gorev
+author:              Vasily Gorev, Sergei Stepanenko, Alexander Granin
 
 -- An email address to which users can send suggestions, bug reports, and
 -- patches.
@@ -81,6 +81,7 @@ library se-lib
                      , safe-exceptions
                      , servant
                      , servant-client
+                     , servant-docs
                      , servant-server
                      , servant-swagger
                      , stm
@@ -176,6 +177,7 @@ test-suite test
                      , hspec-wai
                      , servant-swagger
                      , swagger2
+                     , servant-docs
 
   default-extensions: GADTs
                       RankNTypes

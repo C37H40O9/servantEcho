@@ -4,7 +4,7 @@
 , servant, servant-client, servant-server, stdenv, stm, text, time
 , transformers, transformers-either, unordered-containers, uuid
 , vector, warp, yaml, wai, base-compat, lens, http-client, http-types
-, hspec-wai, swagger2, servant-swagger
+, hspec-wai, swagger2, servant-swagger, servant-docs
 }:
 mkDerivation {
   pname = "servantEcho";
@@ -19,7 +19,7 @@ mkDerivation {
     servant-client servant-server stm text time transformers
     transformers-either unordered-containers uuid vector warp yaml
     wai base-compat lens http-client http-types hspec-wai swagger2
-    servant-swagger
+    servant-swagger servant-docs
   ];
   executableHaskellDepends = [ base ];
   doHaddock = false;
