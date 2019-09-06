@@ -3,18 +3,22 @@ module WebApp
 
 
 import Control.Applicative
+import Control.Lens
 import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Either
 import Data.Aeson
 import Data.Monoid
 import Data.Proxy
+import Data.Swagger
 import Data.Text (Text)
+import Data.Typeable (Typeable)
 import GHC.Generics
 import Servant
 import Servant.API
 import Servant.Client
 import Servant.Server
+import Servant.Swagger
 import Network.Wai.Handler.Warp
 import Control.Monad.Free
 
@@ -22,7 +26,7 @@ import qualified Control.Logging as L
 import qualified Data.Text    as T
 import qualified Data.Text.IO as T
 
--- import Universum
+type APIwithSwagger = SwaggerAPI :<|> API
 
 type API = "echo" :> Capture "message" Text :> Get '[JSON] Message
       :<|> "sayHello"  :> QueryParam "name" Text :> Get '[JSON] Text
@@ -34,8 +38,9 @@ type AreaAPI = "area" :>
   )
 
 newtype Message = Message { msg :: Text }
-  deriving (Generic, Show, Eq)
+  deriving (Generic, Show, Eq, Typeable)
 
+instance ToSchema Message
 instance ToJSON Message
 instance FromJSON Message
 
@@ -60,8 +65,9 @@ runLoggerL :: LoggerL () -> IO ()
 runLoggerL = foldFree interpretLoggerF
 
 data Shape = Circle Double | Square Double
-  deriving (Generic, Show, Eq)
+  deriving (Generic, Show, Eq, Typeable)
 
+instance ToSchema Shape
 instance ToJSON Shape
 instance FromJSON Shape
 
@@ -114,7 +120,23 @@ sayHello' name = runEchoL $ sayHello name
 api :: Proxy API
 api = Proxy
 
-server :: Server API
-server = echo' :<|> sayHello' :<|> shapeServer
+apiWithSwagger :: Proxy APIwithSwagger
+apiWithSwagger = Proxy
 
-runApp = run 8080 (serve api server)
+server :: Server APIwithSwagger
+server = (pure apiSwagger) :<|> echo' :<|> sayHello' :<|> shapeServer
+
+runApp = run 8080 (serve apiWithSwagger server)
+
+
+-- Swagger part
+
+-- | API for serving @swagger.json@.
+type SwaggerAPI = "swagger.json" :> Get '[JSON] Swagger
+
+-- | Swagger spec for Todo API.
+apiSwagger :: Swagger
+apiSwagger = toSwagger api
+  & info.title   .~ "Example API"
+  & info.version .~ "1.0"
+  & info.description ?~ "This is an API that tests swagger integration"

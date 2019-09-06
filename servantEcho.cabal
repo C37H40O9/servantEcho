@@ -69,6 +69,7 @@ library se-lib
                      , extra
                      , filepath
                      , free
+                     , lens
                      , lens-aeson
                      , logging
                      , microlens
@@ -81,7 +82,9 @@ library se-lib
                      , servant
                      , servant-client
                      , servant-server
+                     , servant-swagger
                      , stm
+                     , swagger2
                      , text
                      , time
                      , transformers
