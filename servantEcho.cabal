@@ -174,6 +174,8 @@ test-suite test
                      , http-client
                      , http-types
                      , hspec-wai
+                     , servant-swagger
+                     , swagger2
 
   default-extensions: GADTs
                       RankNTypes
