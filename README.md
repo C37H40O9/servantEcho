@@ -7,13 +7,15 @@ Include:
 - benchmarks
 - swagger & servant-docs api documentation generators.
 
-Example of servant-docs(http://localhost:8080/servant-docs.md):
 
 ## Usage
 In order to choose between different backend types the **BACKEND** variable should be set to:
 - FM -> free monad (default)
 - CEFM -> church-encoded free monad
 - FR -> freer monad
+
+
+Example of servant-docs(http://localhost:8080/servant-docs.md):
 
 ## GET /echo/:message
 
