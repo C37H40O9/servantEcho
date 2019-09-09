@@ -13,7 +13,7 @@ action = pure ()
 main :: IO ()
 main = do
     -- running the application and workload generator on the same machine is not a good idea
-    tId <- forkIO runApp
+    tId <- forkIO $ runApp FreeMonad
     putStrLn "Installed wrk required"
     putStrLn =<< runWRK "/echo/hi"
     putStrLn =<< runWRK "/swagger.json"

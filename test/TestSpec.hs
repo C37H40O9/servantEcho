@@ -7,6 +7,7 @@ import qualified Control.Concurrent               as C
 import           Control.Concurrent.MVar
 import           Control.Exception                (bracket)
 import           Control.Lens              hiding (Context)
+import           Control.Natural
 import           Data.Aeson
 import           Data.Aeson.Lens
 import qualified Data.HashMap.Strict              as HM
@@ -25,9 +26,11 @@ import           Test.Hspec
 import           Test.Hspec.Wai
 import           Test.Hspec.Wai.Matcher
 
+
 import WebApp
 
-testApp = serve api echo'
+testApp = serve api (hoistServer api (unwrapNT (echoHandlerToHandler FreeMonad)) echoHandler)
+  --serve api echo
 
 withUserApp :: (Warp.Port -> IO ()) -> IO ()
 withUserApp action =

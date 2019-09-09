@@ -1,10 +1,10 @@
 { mkDerivation, aeson, async, base, bytestring, clock, containers
-, directory, extra, filepath, free, gauge, lens-aeson, logging, microlens
+, directory, extra, filepath, free, freer, gauge, lens-aeson, logging, microlens
 , mtl, network, newtype-generics, process, random, safe-exceptions
 , servant, servant-client, servant-server, stdenv, stm, text, time
 , transformers, transformers-either, unordered-containers, uuid
 , vector, warp, yaml, wai, base-compat, lens, http-client, http-types
-, hspec-wai, swagger2, servant-swagger, servant-docs
+, hspec-wai, swagger2, servant-swagger, servant-docs natural-transformation
 }:
 mkDerivation {
   pname = "servantEcho";
@@ -14,12 +14,12 @@ mkDerivation {
   isExecutable = true;
   libraryHaskellDepends = [
     aeson async base bytestring clock containers directory extra
-    filepath free gauge lens-aeson logging microlens mtl network
+    filepath free freer gauge lens-aeson logging microlens mtl network
     newtype-generics process random safe-exceptions servant
     servant-client servant-server stm text time transformers
     transformers-either unordered-containers uuid vector warp yaml
     wai base-compat lens http-client http-types hspec-wai swagger2
-    servant-swagger servant-docs
+    servant-swagger servant-docs natural-transformation
   ];
   executableHaskellDepends = [ base ];
   doHaddock = false;

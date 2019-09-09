@@ -84,7 +84,7 @@ library se-lib
                      , servant
                      , servant-client
                      , servant-docs
-                     , servant-server
+                     , servant-server >= 0.16.0
                      , servant-swagger
                      , stm
                      , swagger2
@@ -163,11 +163,12 @@ test-suite test
                      , transformers-either
                      , aeson
                      , text
-                     , servant-server
+                     , servant-server>= 0.16.0
                      , servant
                      , servant-client
                      , warp
                      , free
+                     , freer
                      , logging
                      , wai
                      , base-compat
@@ -180,6 +181,8 @@ test-suite test
                      , servant-swagger
                      , swagger2
                      , servant-docs
+                     , natural-transformation
+                     , mtl
 
   default-extensions: GADTs
                       RankNTypes
@@ -215,3 +218,4 @@ benchmark simpleBench
                     , base
                     , gauge
                     , process
+                    , servant-server >= 0.16.0
